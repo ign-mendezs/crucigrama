@@ -38,9 +38,9 @@ h1 {
   border: none;
 }
 
-/* Celdas verticales (rosado): fondo y borde, esquinas redondeadas y flex centrar contenido */
+/* Celdas verticales (verde): fondo y borde, esquinas redondeadas y flex centrar contenido */
 .vertical {
-  background-color: #ffc0cb;
+  background-color: #99BC85;
   border: 1px solid #777;
   border-radius: 6px;
   display: flex;
@@ -48,9 +48,9 @@ h1 {
   justify-content: center;
 }
 
-/* Celdas horizontales (verde): fondo y borde, esquinas redondeadas y flex centrar */
+/* Celdas horizontales (rosa): fondo y borde, esquinas redondeadas y flex centrar */
 .horizontal {
-  background-color: #90ee90;
+  background-color: #F564A9;
   border: 1px solid #777;
   border-radius: 6px;
   display: flex;
