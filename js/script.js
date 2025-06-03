@@ -121,79 +121,82 @@ for (let fila = 0; fila < TOTAL_ROWS; fila++) {
 }
 
 // ──────────────────────────────────────────────────────────────────────
-// 1) Después de inyectar todo el grid y crear cada <input>, recorremos
-//    nuevamente las mismas celdas (gridData) y le asignamos a cada input
-//    un listener para “autoavanzar” y para “distribuir al pegar”.
+// Recorrer gridData para agregar listeners a cada <input> editable:
 // ──────────────────────────────────────────────────────────────────────
-
-// (Asumo que el código que genera el grid ya está completo arriba)
-
 for (let fila = 0; fila < TOTAL_ROWS; fila++) {
   for (let col = 0; col < TOTAL_COLS; col++) {
     const celdaInfo = gridData[fila][col];
-    // Solo nos interesan las celdas que tienen <input> (no las fijas)
+
+    // Solo si esta celda es parte de palabra y NO es fija (tiene <input>)
     if (celdaInfo.isLetter && !celdaInfo.fixedChar) {
       const input = document.getElementById(`cell-${fila + 1}-${col + 1}`);
       if (!input) continue;
 
-      // Averiguamos la orientación de esta celda:
-      //   “D” → vertical, “A” → horizontal
-      const orient = celdaInfo.orientation; 
+      const orient = celdaInfo.orientation; // "A" (horizontal) o "D" (vertical)
 
-      // 1. Listener para “avanzar” al escribir una letra
+      // ──────────────────────────────────────────────────────────────────
+      // 1) Listener para “input” → auto‐avanzar pero saltando celdas sin <input>
+      // ──────────────────────────────────────────────────────────────────
       input.addEventListener("input", (e) => {
         const valor = e.target.value.toUpperCase();
 
-        // Solo permitimos un carácter por input. Si pegaron más,
-        // lo limitamos a 1 (el resto irá manejado en el listener de "paste").
+        // Si pegó más de 1 carácter, nos quedamos solo con el primero:
         if (valor.length > 1) {
           e.target.value = valor.charAt(0);
         } else {
-          e.target.value = valor; // forzamos mayúscula
+          e.target.value = valor;
         }
 
-        // Si acaban de escribir un carácter válido, movemos el foco
-        // a la siguiente casilla de la misma palabra (según orientación).
+        // Si el usuario escribió una letra A–Z, avanzamos al siguiente <input> válido
         if (valor.match(/^[A-Z]$/)) {
-          let siguienteFila = fila;
-          let siguienteCol = col;
-          if (orient === "A") {
-            siguienteCol = col + 1; // a la derecha
-          } else if (orient === "D") {
-            siguienteFila = fila + 1; // abajo
-          }
-          // Comprobamos que la siguiente casilla exista y tenga input
-          if (
+          // Partimos desde la casilla contigua “inmediata”
+          let siguienteFila = fila + (orient === "D" ? 1 : 0);
+          let siguienteCol = col + (orient === "A" ? 1 : 0);
+
+          // Buscamos hacia adelante mientras haya casillas de la misma palabra
+          while (
             siguienteFila < TOTAL_ROWS &&
-            siguienteCol < TOTAL_COLS &&
-            gridData[siguienteFila][siguienteCol].isLetter &&
-            !gridData[siguienteFila][siguienteCol].fixedChar
+            siguienteCol < TOTAL_COLS
           ) {
-            const nextInput = document.getElementById(
+            const infoSig = gridData[siguienteFila][siguienteCol];
+            // Si esa celda NO es parte de palabra → salimos del while
+            if (!infoSig.isLetter) break;
+            // Si esa celda es fija o no tiene <input> (fija: fixedChar),
+            // entonces saltamos a la siguiente en la misma orientación:
+            if (infoSig.fixedChar) {
+              siguienteFila += orient === "D" ? 1 : 0;
+              siguienteCol += orient === "A" ? 1 : 0;
+              continue;
+            }
+            // Si llega aquí, es una celda editable con <input> disponible:
+            const siguienteInput = document.getElementById(
               `cell-${siguienteFila + 1}-${siguienteCol + 1}`
             );
-            if (nextInput) nextInput.focus();
+            if (siguienteInput) {
+              siguienteInput.focus();
+            }
+            break;
           }
         }
       });
 
-      // 2. Listener para “pegar” (paste): si el usuario pega una palabra completa,
-      //    la dividimos letra a letra en cada input de la misma orientación.
+      // ──────────────────────────────────────────────────────────────────
+      // 2) Listener para “paste” → repartir caracteres pegados hacia adelante
+      // ──────────────────────────────────────────────────────────────────
       input.addEventListener("paste", (e) => {
         e.preventDefault();
-        // Obtenemos texto crudo del portapapeles
         const texto = (e.clipboardData || window.clipboardData).getData("text");
-
-        // Lo convertimos a mayúsculas y solo guardamos letras A–Z
         const letras = texto.toUpperCase().match(/[A-Z]/g) || [];
 
-        // Recorreremos las celdas de esta palabra (a partir de la actual),
-        // avanzando según “orient” y escribimos cada carácter de “letras”:
+        // Partimos desde la posición actual (fila, col)
         let r = fila;
         let c = col;
+
         for (let i = 0; i < letras.length; i++) {
-          // Si la casilla actual no existe o es fija, terminamos
+          // Si esa casilla ya no es parte de la palabra, o es fija, rompemos
           if (
+            r < 0 ||
+            c < 0 ||
             r >= TOTAL_ROWS ||
             c >= TOTAL_COLS ||
             !gridData[r][c].isLetter ||
@@ -201,38 +204,47 @@ for (let fila = 0; fila < TOTAL_ROWS; fila++) {
           ) {
             break;
           }
-          // Insertamos el carácter en el input correspondiente
+
           const campo = document.getElementById(`cell-${r + 1}-${c + 1}`);
           if (!campo) break;
           campo.value = letras[i];
 
-          // Pasamos a la siguiente casilla según orientación
-          if (orient === "A") c++;
-          else if (orient === "D") r++;
+          // Avanzamos a la siguiente casilla lógica:
+          let rNext = r + (orient === "D" ? 1 : 0);
+          let cNext = c + (orient === "A" ? 1 : 0);
+
+          // Si la siguiente es fija o no existe, saltamos hasta encontrar el próximo <input>
+          while (
+            rNext < TOTAL_ROWS &&
+            cNext < TOTAL_COLS &&
+            gridData[rNext][cNext].isLetter &&
+            gridData[rNext][cNext].fixedChar
+          ) {
+            rNext += orient === "D" ? 1 : 0;
+            cNext += orient === "A" ? 1 : 0;
+          }
+
+          r = rNext;
+          c = cNext;
         }
 
-        // Al terminar de pegar, posicionamos el foco en la última casilla escrita
-        const ultimaValorIndex = Math.min(letras.length - 1, letras.length);
-        const filaFinal =
-          orient === "A" ? fila : fila + (letras.length - 1);
-        const colFinal =
-          orient === "A" ? col + (letras.length - 1) : col;
+        // Finalmente posicionamos el foco en la última casilla llenada
+        // (salteada de la misma forma que al escribir)
         if (
-          filaFinal < TOTAL_ROWS &&
-          colFinal < TOTAL_COLS &&
-          gridData[filaFinal][colFinal].isLetter &&
-          !gridData[filaFinal][colFinal].fixedChar
+          r < TOTAL_ROWS &&
+          c < TOTAL_COLS &&
+          gridData[r][c].isLetter &&
+          !gridData[r][c].fixedChar
         ) {
-          const ultimoInput = document.getElementById(
-            `cell-${filaFinal + 1}-${colFinal + 1}`
+          const ultimoCampo = document.getElementById(
+            `cell-${r + 1}-${c + 1}`
           );
-          if (ultimoInput) ultimoInput.focus();
+          if (ultimoCampo) ultimoCampo.focus();
         }
       });
     }
   }
 }
-
 
 // ------------------------------
 // 7) GENERAMOS LISTA DE PISTAS EN <ol>
