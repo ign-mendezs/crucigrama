@@ -4,31 +4,12 @@
 const fixedWords = [
   { text: "CASAMOS", row: 7, col: 1, dir: "A" }
 ];
-
-//   b) palabras: cada objeto indica la palabra a resolver, su posición y orientación.
-//      Asegúrate de que estas coordenadas cumplan las intersecciones letra a letra:
 const palabras = [
-  // RESERVA (7 letras). Su “A” final debe caer en (7,2), coincidiendo con la 2ª letra “A” de CASAMOS.
-  // Por eso la ubicamos en row:1, col:2, dir:"D" → (1,2)→(7,2).
   { text: "RESERVA", row: 1, col: 2, dir: "D" },
-
-  // LA (2 letras). Su “A” final en (7,4) coincide con la 4ª letra “A” de CASAMOS.
-  // Entonces va en row:6, col:4, dir:"D" → (6,4)→(7,4).
   { text: "LA",      row: 6, col: 4, dir: "D" },
-
-  // FECHA (5 letras). Horizontal en fila 2, desde col:1 hasta col:5, sin cruces con CASAMOS.
   { text: "FECHA",   row: 2, col: 1, dir: "A" },
-
-  // VEINTISIETE (11 letras). Su 7ª letra “S” debe caer en (7,7), cruzando con la última “S” de CASAMOS.
-  // Por eso la ubicamos en row:1, col:7, dir:"D" → (1,7)→(11,7).
   { text: "VEINTISIETE", row: 1, col: 7, dir: "D" },
-
-  // DICIEMBRE (9 letras). Queremos que su primera “E” (5ª letra) caiga en (11,7) cruzando con VEINTISIETE.
-  // DICIEMBRE se extiende de col:3 a col:11 en fila 11 → row:11, col:3, dir:"A".
   { text: "DICIEMBRE",   row: 11, col: 3, dir: "A" },
-
-  // NOS (3 letras). Su “O” (2ª letra) debe caer en (7,6), cruzando con la 6ª letra “O” de CASAMOS.
-  // Entonces va en row:6, col:6, dir:"D" → (6,6)→(8,6).
   { text: "NOS", row: 6, col: 6, dir: "D" }
 ];
 
