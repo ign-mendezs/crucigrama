@@ -167,11 +167,12 @@ h1 {
   position: relative;
   background-color: #f1ebdb;
   border-radius: 10px;
-  padding: 20px;
+  padding: 10px;
   max-width: 90%;
   max-height: 90%;
   text-align: center;
   box-shadow: 0 2px 10px rgba(0, 0, 0, 0.3);
+  overflow: auto;
 }
 
 .close-btn {
@@ -191,11 +192,11 @@ h1 {
 
 /* Imagen de éxito con bordes redondeados */
 .imagen-exito {
-  width: 80%;             /* aumenta al 80% del ancho del modal */
-  max-width: 400px;        /* opcional: para no excederse en pantallas grandes */
+  width: 100%;             /* aumenta al 80% del ancho del modal */
+  max-width: 800px;        /* opcional: para no excederse en pantallas grandes */
   height: auto;
   border-radius: 12px;     /* bordes redondeados */
-  margin-bottom: 15px;
+  margin-bottom: 10px;
 }
 
 /* Botón de cerrar modal */
