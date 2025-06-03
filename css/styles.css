@@ -52,7 +52,7 @@ h1 {
 
 /* Celdas horizontales (rosa): fondo y borde, esquinas redondeadas y flex centrar */
 .horizontal {
-  background-color: #F564A9;
+  background-color: #EC7FA9;
   border: 1px solid #777;
   border-radius: 6px;
   display: flex;
