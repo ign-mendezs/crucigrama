@@ -19,12 +19,27 @@
 <body>
   <h1>Crucigrama</h1>
 
-  <!-- Aquí se inyectará el grid 11×11 -->
+  <!-- Contenedor del crucigrama -->
   <div id="crucigrama" class="grid"></div>
 
-  <!-- Lista de pistas numerada automáticamente -->
+  <!-- Botón para verificar respuestas -->
+  <div class="verificar-container">
+    <button id="btn-verificar">Verificar respuestas</button>
+  </div>
+
+  <!-- Lista de pistas -->
   <div class="pistas-container">
     <ol id="lista-pistas"></ol>
+  </div>
+
+  <!-- Modal de éxito -->
+  <div id="modal-exito" class="modal">
+    <div class="modal-contenido">
+      <!-- Aquí pones la ruta a tu imagen de felicitación -->
+      <img src="assets/exito.jpg" alt="¡Felicidades!" class="imagen-exito" />
+      <p>¡Felicidades! Has completado el crucigrama correctamente.</p>
+      <button id="btn-cerrar-modal">Cerrar</button>
+    </div>
   </div>
 
   <script src="js/script.js"></script>
