@@ -144,6 +144,6 @@ const pistasDescriptivas = [
 palabras.forEach((wordObj, index) => {
   const li = document.createElement("li");
   const num = index + 1; // 1..6
-  li.innerHTML = `<strong>${num}.</strong> ${pistasDescriptivas[index]}`;
+  li.textContent = pistasDescriptivas[index];
   listaPistas.appendChild(li);
 });
