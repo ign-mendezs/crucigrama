@@ -13,9 +13,9 @@ const palabras = [
   { text: "RESERVA",     row: 1,  col: 2,  dir: "D" }, // pista 1
   { text: "LA",          row: 6,  col: 4,  dir: "D" }, // pista 2
   { text: "FECHA",       row: 2,  col: 1,  dir: "A" }, // pista 3
-  { text: "VEINTISIETE", row: 1,  col: 7,  dir: "D" }, // pista 4
+  { text: "VEINTISIETE", row: 1,  col: 8,  dir: "D" }, // pista 4
   { text: "DICIEMBRE",   row: 11, col: 3,  dir: "A" }, // pista 5
-  { text: "NOS",         row: 7,  col: 6,  dir: "D" }  // pista 6
+  { text: "NOS",         row: 6,  col: 6,  dir: "D" }  // pista 6
 ];
 
 // 2. Definimos el tamaño total del crucigrama: 11 filas x 11 columnas
