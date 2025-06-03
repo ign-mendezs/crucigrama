@@ -16,11 +16,11 @@ h1 {
   margin-bottom: 20px;
 }
 
-/* Grid contenedor: 11 columnas, con gap entre celdas */
+/* Grid contenedor: 12 columnas, con gap entre celdas */
 .grid {
   display: grid;
-  grid-template-columns: repeat(11, 1fr);
-  max-width: 600px;
+  grid-template-columns: repeat(12, 1fr); /* 12 columnas */
+  max-width: 660px;  /* 12 columnas * 55px aproximados = 660px (puedes ajustar) */
   margin: 0 auto 30px;
   gap: 5px; /* espacio entre cada “celda” */
 }
@@ -29,37 +29,42 @@ h1 {
 .cell {
   position: relative;
   width: 100%;
-  aspect-ratio: 1; /* fuerza a cada celda a ser cuadrada */
+  aspect-ratio: 1; /* fuerza cada celda a ser cuadrada */
 }
 
 /* Celdas en blanco (no forman parte de ninguna palabra):
-   completamente invisibles: fondo transparente, sin borde */
+   totalmente transparentes */
 .blank {
   background-color: transparent;
   border: none;
 }
 
 /* Celdas verticales (rosado):
-   fondo rosado, borde fino, esquinas redondeadas */
+   fondo rosado, borde fino y esquinas redondeadas. Además, flex para centrar fijo. */
 .vertical {
-  background-color: #C2F9BB;
+  background-color: #ffc0cb;
   border: 1px solid #777;
   border-radius: 6px;
-    /* Añade estas líneas: */
+
+  /* Centrado de contenido (útil para <span class="fixed-letter">) */
   display: flex;
   align-items: center;
   justify-content: center;
 }
 
 /* Celdas horizontales (verde claro):
-   fondo verde, borde fino, esquinas redondeadas */
+   fondo verde, borde fino, esquinas redondeadas. Flex para centrar. */
 .horizontal {
-  background-color: #D496A7;
+  background-color: #90ee90;
   border: 1px solid #777;
   border-radius: 6px;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
-/* Indicador numérico en cada celda inicial de palabra a resolver */
+/* Indicador numérico en cada celda inicial (editable) */
 .number {
   position: absolute;
   top: 2px;
@@ -68,7 +73,8 @@ h1 {
   color: #000;
 }
 
-/* Input para que el usuario ingrese letras (sólo para palabras a resolver) */
+/* Input para que el usuario ingrese letras (editable):
+   ocupa todo el espacio y letra en negro centrada */
 .cell input {
   width: 100%;
   height: 100%;
@@ -81,20 +87,17 @@ h1 {
   outline: none;
 }
 
-/* Para la palabra “CASAMOS” fija, mostraremos la letra con un <span>,
-   así que podemos darle estilo de texto centrado y bold: */
+/* Para las celdas con letra fija (“CASAMOS”), ya centramos con flex;
+   en caso de necesitar estilo extra para el <span> dentro: */
 .fixed-letter {
-  display: flex;
-  align-items: center;
-  justify-content: center;
   font-size: 1.2rem;
   font-weight: bold;
   color: #000;
 }
 
-/* Lista de pistas */
+/* Lista de pistas (ordenada automáticamente con <ol>) */
 .pistas-container {
-  max-width: 600px;
+  max-width: 660px;
   margin: 0 auto;
 }
 
