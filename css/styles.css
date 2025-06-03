@@ -16,42 +16,51 @@ h1 {
   margin-bottom: 20px;
 }
 
+/* Grid contenedor: 11 columnas, con gap entre celdas */
 .grid {
   display: grid;
   grid-template-columns: repeat(11, 1fr);
   max-width: 600px;
   margin: 0 auto 30px;
-  gap: 1px; /* línea fina entre celdas */
-  background-color: #999; /* color de separador */
+  gap: 5px; /* espacio entre cada “celda” */
 }
 
-/* Cada “celda” del crucigrama */
+/* Cada “celda” dentro del grid */
 .cell {
   position: relative;
-  background-color: #ffffff;
+  width: 100%;
+  /* height implícito: como usamos aspect-ratio, será cuadrada */
+  aspect-ratio: 1;
 }
 
-/* Celdas en blanco (no forman parte de ninguna palabra) */
+/* Celdas en blanco (no forman parte de ninguna palabra):
+   simplemente no se dibujan (fondo transparente y sin borde) */
 .blank {
-  background-color: #f7f7f7;
+  background-color: transparent;
   border: none;
 }
 
-/* Celdas verticales (rosado) */
+/* Celdas verticales (rosado):
+   fondo rosado, borde fino, esquinas redondeadas */
 .vertical {
   background-color: #ffc0cb;
+  border: 1px solid #777;
+  border-radius: 6px;
 }
 
-/* Celdas horizontales (verde claro) */
+/* Celdas horizontales (verde claro):
+   fondo verde, borde fino, esquinas redondeadas */
 .horizontal {
   background-color: #90ee90;
+  border: 1px solid #777;
+  border-radius: 6px;
 }
 
 /* Indicador numérico en cada celda inicial */
 .number {
   position: absolute;
   top: 2px;
-  left: 2px;
+  left: 4px;
   font-size: 0.6rem;
   color: #000;
 }
