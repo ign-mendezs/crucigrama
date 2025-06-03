@@ -6,12 +6,14 @@
 }
 
 body {
-  font-family: Arial, sans-serif;
+  font-family: "Funnel Display", sans-serif;
   padding: 20px;
   background-color: #f1ebdb;
 }
 
 h1 {
+  font-family: "Imperial Script", cursive;
+  font-size: 2.5rem; /* ajusta a tu gusto */
   text-align: center;
   margin-bottom: 20px;
 }
