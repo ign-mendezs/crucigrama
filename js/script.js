@@ -1,0 +1,29 @@
+
+---
+
+## 2. index.html
+
+```html
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Crucigrama Interactivo</title>
+  <link rel="stylesheet" href="css/styles.css" />
+</head>
+<body>
+  <h1>Crucigrama Interactivo</h1>
+
+  <!-- Contenedor del crucigrama -->
+  <div id="crucigrama" class="grid"></div>
+
+  <!-- Lista de pistas -->
+  <div class="pistas-container">
+    <h2>Pistas</h2>
+    <ol id="lista-pistas"></ol>
+  </div>
+
+  <script src="js/script.js"></script>
+</body>
+</html>
