@@ -29,12 +29,11 @@ h1 {
 .cell {
   position: relative;
   width: 100%;
-  /* height implícito: como usamos aspect-ratio, será cuadrada */
-  aspect-ratio: 1;
+  aspect-ratio: 1; /* fuerza a cada celda a ser cuadrada */
 }
 
 /* Celdas en blanco (no forman parte de ninguna palabra):
-   simplemente no se dibujan (fondo transparente y sin borde) */
+   completamente invisibles: fondo transparente, sin borde */
 .blank {
   background-color: transparent;
   border: none;
@@ -43,7 +42,7 @@ h1 {
 /* Celdas verticales (rosado):
    fondo rosado, borde fino, esquinas redondeadas */
 .vertical {
-  background-color: #ffc0cb;
+  background-color: #C2F9BB;
   border: 1px solid #777;
   border-radius: 6px;
 }
@@ -51,12 +50,12 @@ h1 {
 /* Celdas horizontales (verde claro):
    fondo verde, borde fino, esquinas redondeadas */
 .horizontal {
-  background-color: #90ee90;
+  background-color: #D496A7;
   border: 1px solid #777;
   border-radius: 6px;
 }
 
-/* Indicador numérico en cada celda inicial */
+/* Indicador numérico en cada celda inicial de palabra a resolver */
 .number {
   position: absolute;
   top: 2px;
@@ -65,7 +64,7 @@ h1 {
   color: #000;
 }
 
-/* Input para que el usuario ingrese letras */
+/* Input para que el usuario ingrese letras (sólo para palabras a resolver) */
 .cell input {
   width: 100%;
   height: 100%;
@@ -76,6 +75,17 @@ h1 {
   text-transform: uppercase;
   color: #000;
   outline: none;
+}
+
+/* Para la palabra “CASAMOS” fija, mostraremos la letra con un <span>,
+   así que podemos darle estilo de texto centrado y bold: */
+.fixed-letter {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.2rem;
+  font-weight: bold;
+  color: #000;
 }
 
 /* Lista de pistas */
