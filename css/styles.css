@@ -193,7 +193,7 @@ h1 {
 /* Imagen de éxito con bordes redondeados */
 .imagen-exito {
   width: 100%;             /* aumenta al 80% del ancho del modal */
-  max-width: 800px;        /* opcional: para no excederse en pantallas grandes */
+  max-width: 750px;        /* opcional: para no excederse en pantallas grandes */
   height: auto;
   border-radius: 12px;     /* bordes redondeados */
   margin-bottom: 10px;
