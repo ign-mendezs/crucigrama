@@ -1,69 +1,62 @@
 // 1. Definimos DOS listas de palabras:
-//    a) fixedWords: palabras que aparecen fijas (no editables). Aquí sólo "CASAMOS".
-//    b) palabras: las palabras que el usuario debe resolver (editable con inputs),
-//       numeradas del 1 al 6. A cada una le daremos una pista descriptiva más abajo.
+//    a) fixedWords: "CASAMOS" (fija, no editable).
+//    b) palabras: las 6 palabras que el usuario debe resolver.
 
 const fixedWords = [
-  // "CASAMOS" aparece fija en fila 7, columna 2, dirección horizontal ("A")
   { text: "CASAMOS", row: 7, col: 2, dir: "A" }
 ];
 
 const palabras = [
-  // Estas son las 6 palabras que el usuario debe rellenar, con sus posiciones.
-  { text: "RESERVA",     row: 1,  col: 2,  dir: "D" }, // pista 1
-  { text: "LA",          row: 6,  col: 4,  dir: "D" }, // pista 2
+  { text: "RESERVA",     row: 1,  col: 3,  dir: "D" }, // pista 1
+  { text: "LA",          row: 6,  col: 5,  dir: "D" }, // pista 2
   { text: "FECHA",       row: 2,  col: 1,  dir: "A" }, // pista 3
   { text: "VEINTISIETE", row: 1,  col: 8,  dir: "D" }, // pista 4
   { text: "DICIEMBRE",   row: 11, col: 4,  dir: "A" }, // pista 5
   { text: "NOS",         row: 6,  col: 7,  dir: "D" }  // pista 6
 ];
 
-// 2. Definimos el tamaño total del crucigrama: 11 filas x 11 columnas
+// 2. Tamaño del crucigrama: 11 filas x 12 columnas (hoy usamos col=1..12).
 const TOTAL_ROWS = 11;
-const TOTAL_COLS = 11;
+const TOTAL_COLS = 12;
 
-// 3. Inicializamos gridData (matriz 11×11) con celdas vacías
+// 3. Creamos gridData: cada celda vacía al principio.
 const gridData = [];
 for (let r = 1; r <= TOTAL_ROWS; r++) {
   const fila = [];
   for (let c = 1; c <= TOTAL_COLS; c++) {
     fila.push({
-      isLetter: false,   // si formará parte de palabra (fija o a resolver)
-      number: null,      // número de pista (solo para palabras a resolver)
+      isLetter: false,   // si forma parte de alguna palabra
+      number: null,      // número de pista (solo para las palabras a resolver)
       orientation: null, // "A" u "D"
-      fixedChar: null    // si es parte de fixedWords, almacenamos la letra
+      fixedChar: null    // para las letras de fixedWords
     });
   }
   gridData.push(fila);
 }
 
-// 4. Marcamos en gridData las celdas correspondientes a fixedWords (CASAMOS)
-//    No asignamos número ni input: sólo guardamos fixedChar = letra.
+// 4. Marcamos las celdas de fixedWords (CASAMOS):
 fixedWords.forEach(wordObj => {
   const { text, row, col, dir } = wordObj;
   for (let i = 0; i < text.length; i++) {
     const r = dir === "D" ? row + i : row;
     const c = dir === "A" ? col + i : col;
-    // Colocamos la letra fija
     gridData[r - 1][c - 1].isLetter = true;
-    gridData[r - 1][c - 1].orientation = dir;      // para pintar color
-    gridData[r - 1][c - 1].fixedChar = text[i];    // la letra que se mostrará sin input
+    gridData[r - 1][c - 1].orientation = dir;
+    gridData[r - 1][c - 1].fixedChar = text[i];
   }
 });
 
-// 5. Marcamos en gridData las celdas correspondientes a las palabras a resolver
-//    A cada primera letra le asignamos un número de pista (1..6).
+// 5. Marcamos las celdas de las 6 palabras a resolver:
 palabras.forEach((wordObj, index) => {
   const { text, row, col, dir } = wordObj;
-  const numPista = index + 1; // 1 a 6
+  const numPista = index + 1; // 1..6
   for (let i = 0; i < text.length; i++) {
     const r = dir === "D" ? row + i : row;
     const c = dir === "A" ? col + i : col;
     gridData[r - 1][c - 1].isLetter = true;
-    // Si ya existía una letra fija (intersección con "CASAMOS"), 
-    // dejamos fixedChar tal cual y sólo actualizamos orientation si no estaba.
+
+    // Si ya existe fixedChar (intersección con CASAMOS), no reescribimos:
     if (!gridData[r - 1][c - 1].fixedChar) {
-      // Solo si no es celda fija, marcamos orientation y número
       if (i === 0) {
         gridData[r - 1][c - 1].number = numPista;
         gridData[r - 1][c - 1].orientation = dir;
@@ -85,38 +78,38 @@ for (let fila = 0; fila < TOTAL_ROWS; fila++) {
     const celdaDiv = document.createElement("div");
 
     if (!celdaInfo.isLetter) {
-      // Celda que no forma parte de ninguna palabra
+      // Si NO es parte de palabra, la dejamos vacía/transparent
       celdaDiv.classList.add("cell", "blank");
     } else {
-      // Celda que SÍ forma parte de palabra (fija o a resolver)
+      // Celda que SÍ pertenece a alguna palabra (fija o editable)
       celdaDiv.classList.add("cell");
 
-      // Dependiendo de orientation, asignamos color (vertical u horizontal).
-      // IMPORTANTE: en caso de intersección (fija + resolvible), 
-      // puede que orientation viniera de fixedWords o de palabras.
+      // *Color* según orientación (D=vertical → rosado; A=horizontal → verde)
       if (celdaInfo.orientation === "D") {
         celdaDiv.classList.add("vertical");
       } else if (celdaInfo.orientation === "A") {
         celdaDiv.classList.add("horizontal");
       }
 
-      // Si tiene fixedChar, es la palabra "CASAMOS" (o cualquier otra fija)
+      // Si tiene fixedChar, es “CASAMOS” → lo mostramos como texto centrado
       if (celdaInfo.fixedChar) {
-        // Mostramos la letra fija como <span class="fixed-letter">X</span>
+        // Agregamos la clase fixed-cell para centrar mediante flexbox
+        celdaDiv.classList.add("fixed-cell");
         const spanF = document.createElement("span");
         spanF.classList.add("fixed-letter");
         spanF.textContent = celdaInfo.fixedChar;
         celdaDiv.appendChild(spanF);
-      } else {
-        // Si no tiene fixedChar, entonces es parte de alguna palabra a resolver
-        // Puede tener número si es primera letra
+      }
+      // Si NO tiene fixedChar, es una celda editable:
+      else {
+        // Si es la primera letra de una palabra, ponemos número
         if (celdaInfo.number !== null) {
           const spanNum = document.createElement("span");
           spanNum.classList.add("number");
           spanNum.textContent = celdaInfo.number;
           celdaDiv.appendChild(spanNum);
         }
-        // Creamos el <input> para que el usuario escriba la letra
+        // Luego creamos el <input> para que el usuario escriba la letra
         const inputLetra = document.createElement("input");
         inputLetra.setAttribute("type", "text");
         inputLetra.setAttribute("maxlength", "1");
@@ -129,8 +122,8 @@ for (let fila = 0; fila < TOTAL_ROWS; fila++) {
   }
 }
 
-// 7. Generar la lista de pistas descriptivas (sólo para las 6 palabras a resolver)
-//    No incluimos “CASAMOS” aquí; nuestras pistas van del 1 al 6.
+// 7. Generamos las pistas descriptivas (solo para las 6 palabras a resolver)
+//    Con <ol> y li.textContent: el navegador numera del 1 al 6 automáticamente.
 const listaPistas = document.getElementById("lista-pistas");
 const pistasDescriptivas = [
   "Guarda o custodia que se hace de algo",
@@ -141,9 +134,8 @@ const pistasDescriptivas = [
   "Forma que, en dativo o acusativo, designa a las personas que se hablan o escriben"
 ];
 
-palabras.forEach((wordObj, index) => {
+palabras.forEach((_, index) => {
   const li = document.createElement("li");
-  const num = index + 1; // 1..6
   li.textContent = pistasDescriptivas[index];
   listaPistas.appendChild(li);
 });
