@@ -175,7 +175,7 @@ h1 {
 
 /* Imagen de éxito con bordes redondeados */
 .imagen-exito {
-  width: 200px;       /* ajusta según convenga */
+  width: 600px;       /* ajusta según convenga */
   height: auto;
   border-radius: 12px; /* bordes redondeados */
   margin-bottom: 15px;
