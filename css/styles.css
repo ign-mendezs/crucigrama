@@ -16,55 +16,49 @@ h1 {
   margin-bottom: 20px;
 }
 
-/* Grid contenedor: 12 columnas, con gap entre celdas */
+/* GRID 11×11: 11 columnas, gap entre celdas */
 .grid {
   display: grid;
-  grid-template-columns: repeat(12, 1fr); /* 12 columnas */
-  max-width: 660px;  /* 12 columnas * 55px aproximados = 660px (puedes ajustar) */
+  grid-template-columns: repeat(11, 1fr);
+  max-width: 605px;  /* ~11 celdas × 55px c/u */
   margin: 0 auto 30px;
-  gap: 5px; /* espacio entre cada “celda” */
+  gap: 5px;          /* espacio entre celdas */
 }
 
-/* Cada “celda” dentro del grid */
+/* Cada celda cuadrada */
 .cell {
   position: relative;
   width: 100%;
-  aspect-ratio: 1; /* fuerza cada celda a ser cuadrada */
+  aspect-ratio: 1; /* fuerza a ser cuadrada */
 }
 
-/* Celdas en blanco (no forman parte de ninguna palabra):
-   totalmente transparentes */
+/* Celdas vacías: totalmente transparentes */
 .blank {
   background-color: transparent;
   border: none;
 }
 
-/* Celdas verticales (rosado):
-   fondo rosado, borde fino y esquinas redondeadas. Además, flex para centrar fijo. */
+/* Celdas verticales (rosado): fondo y borde, esquinas redondeadas y flex centrar contenido */
 .vertical {
   background-color: #ffc0cb;
   border: 1px solid #777;
   border-radius: 6px;
-
-  /* Centrado de contenido (útil para <span class="fixed-letter">) */
   display: flex;
   align-items: center;
   justify-content: center;
 }
 
-/* Celdas horizontales (verde claro):
-   fondo verde, borde fino, esquinas redondeadas. Flex para centrar. */
+/* Celdas horizontales (verde): fondo y borde, esquinas redondeadas y flex centrar */
 .horizontal {
   background-color: #90ee90;
   border: 1px solid #777;
   border-radius: 6px;
-
   display: flex;
   align-items: center;
   justify-content: center;
 }
 
-/* Indicador numérico en cada celda inicial (editable) */
+/* Número de pista en la esquina superior */
 .number {
   position: absolute;
   top: 2px;
@@ -73,8 +67,7 @@ h1 {
   color: #000;
 }
 
-/* Input para que el usuario ingrese letras (editable):
-   ocupa todo el espacio y letra en negro centrada */
+/* Input de letra para celdas editables */
 .cell input {
   width: 100%;
   height: 100%;
@@ -87,17 +80,16 @@ h1 {
   outline: none;
 }
 
-/* Para las celdas con letra fija (“CASAMOS”), ya centramos con flex;
-   en caso de necesitar estilo extra para el <span> dentro: */
+/* Letra fija (CASAMOS) dentro de la celda */
 .fixed-letter {
   font-size: 1.2rem;
   font-weight: bold;
   color: #000;
 }
 
-/* Lista de pistas (ordenada automáticamente con <ol>) */
+/* Estilos para sección de pistas */
 .pistas-container {
-  max-width: 660px;
+  max-width: 605px;
   margin: 0 auto;
 }
 
