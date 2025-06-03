@@ -45,6 +45,10 @@ h1 {
   background-color: #C2F9BB;
   border: 1px solid #777;
   border-radius: 6px;
+    /* Añade estas líneas: */
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
 /* Celdas horizontales (verde claro):
